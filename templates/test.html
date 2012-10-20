@@ -4,6 +4,11 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
+            alert(JSON.stringify({
+                        latitude: Math.random() * 200 - 100,
+                        longitude: Math.random() * 200 - 100,
+                        whisper: "asfxvsfsfskjsfkjsfkjksfjksajfksjfksajfkajfkjasfsfkjkwjfkjsfkjskfjskfjksjfksjfksj"
+                      }));
             $('#testlink').click(function(e){
                 e.preventDefault();
                 for(var i = 0; i < 500; i++){
