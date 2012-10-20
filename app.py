@@ -18,6 +18,7 @@ import boto
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 import uuid
+import random
 
 app = Flask(__name__)
 BASE_URL = "http://guarded-earth-9510.herokuapp.com/"
@@ -91,6 +92,7 @@ def near_points():
 
 @app.route('/sounds/<filename>', methods=['GET'])
 def play_sound(filename):
+    filename = "http://cs.utexas.edu/~elie/" + str(random.randint(0,9) + ".m4a"
     return render_template('player.html', filename=filename)
     
 if __name__ == '__main__':
