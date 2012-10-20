@@ -31,9 +31,6 @@ def hello():
     
     db = connection.my_database
     # Create some objects
-    #car = {"brand": "Ford",
-    #       "model": "Mustang",
-    #       "date": datetime.datetime.utcnow()}
     
     if request.method == 'POST':
         whisper = request.files['whisper']
@@ -41,22 +38,27 @@ def hello():
         conn = S3Connection('AKIAJHIOLSDVACJCJXWQ', '2BS/TR7pCxMrR2stu2BSGVjvne0Dz8EBEfHjwEVX')
         bucket = conn.create_bucket('whisperly')
         k = Key(bucket)
-        k.key = 'baz'
+        k.key = whisper.filename
         k.set_contents_from_string(whisper.read())
-        return "Success!"
-    # Get your collection
-    #cars = db.cars
-    # Insert it
-    #cars.insert(car)
-    #json_docs = [json.dumps(doc, default=json_util.default) for doc in cars.find()]
 
-    #json_docs = []
-    #for doc in cars.find():
-    #    json_doc = json.dumps(doc, default=json_util.default)
-    #    json_docs.append(json_doc)
+        whisper.seek(0)
+        car = {"brand": whisper.readline().strip(),
+               "model": whisper.readline().strip(),
+               "date": datetime.datetime.utcnow()}
+
+        # Get your collection
+        cars = db.cars
+        # Insert it
+        cars.insert(car)
+        json_docs = [json.dumps(doc, default=json_util.default) for doc in cars.find()]
+
+        #json_docs = []
+        for doc in cars.find():
+            json_doc = json.dumps(doc, default=json_util.default)
+            json_docs.append(json_doc)
+        return '\n'.join(json_docs)
 
 
-    #return '\n'.join(json_docs)
     return '''
     <!doctype html>
     <title>Upload new File</title>
