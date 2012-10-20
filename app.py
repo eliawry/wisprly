@@ -85,7 +85,7 @@ def near_points():
     connection = mongo_conn()
     db = connection.app8563631
     whispers = db.whispers
-    near = whispers.find({"loc": {"$near": [latitude, longitude]}}).limit(20)
+    near = whispers.find({"loc": {"$near": [latitude, longitude]}}).limit(50)
     results = [{'lat': doc['loc'][0], 'lng': doc['loc'][1], 'link': ('/sounds/' + doc['s3_key'])} for doc in near]
     return jsonify(items=results)
 
