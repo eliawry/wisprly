@@ -34,7 +34,7 @@ def mongo_conn():
 @app.route('/test', methods=['GET'])
 def test_data():
     # Get your DB
-    mongo_conn().app8563631.whispers.create_index([("loc", GEO2D)])
+    #mongo_conn().app8563631.whispers.create_index([("loc", GEO2D)])
     return render_template("test.html")    
 
 @app.route('/', methods=['GET'])
@@ -44,10 +44,6 @@ def hello():
 
 @app.route('/upload_geoaudio', methods=['POST'])
 def upload_geoaudio():
-    # Handle bad method calls
-    if request.method != 'POST':
-        abort(404)
-
     # Get your DB
     connection = mongo_conn()
 

@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <head profile="http://www.w3.org/2005/10/profile">
+    <link rel="icon" 
+          type="image/ico" 
+          href="{{ url_for('static', filename='images/favicon.ico') }}">
+
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
       #map_canvas { height: 100% }
+      #explore-button {
+        border-radius:2px;border-width:1px;border-style:solid;padding:10px;border-color:#DADADA;
+      }
+      #explore-button:hover{
+        border-color:black;
+        color: black;
+      }
     </style>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?sensor=true&key=AIzaSyDX6QNLCE_U1y-Alaa3VDmsR3bCpl8agn4">
@@ -149,12 +160,17 @@
 </head><body>
 
 <div id="boxes">
-<div style="top: 199.5px; left: 551.5px; display: none;" id="dialog" class="window">
-Whisper: Listen to your world | 
-<a href="#" class="close">Explore Whisper</a>
-</div>
-<!-- Mask to cover the whole screen -->
-<div style="width: 1478px; height: 602px; display: none; opacity: 0.8;" id="mask"></div>
+  <div style="top: 199.5px; left: 551.5px; display: none; border-radius: 20px;" id="dialog" class="window">
+    <div>
+      <img style="text-align:center;" src="{{ url_for('static', filename='images/logo.png') }}"/>
+      <span style="float:right; font-style:italic;"><small>Listen to your world</small></span> 
+    </div>
+    <div style="text-align:center;padding-top:30px;">
+      <a id="explore-button" href="#" class="close">Explore</a>
+    </div>
+  </div>
+  <!-- Mask to cover the whole screen -->
+  <div style="width: 1478px; height: 602px; display: none; opacity: 0.8;" id="mask"></div>
 </div>
 
 
