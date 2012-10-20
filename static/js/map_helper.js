@@ -38,7 +38,7 @@ var styles = [
         }
       ];
 
-function attachMessage(marker, path) {
+function attachMessage(marker, path, boxes) {
        var boxText = document.createElement("div");
         boxText.style.cssText = "margin-top: 2px; background: #8FC4BC; padding: 2px; border-radius: 70px;";
 
@@ -62,10 +62,10 @@ function attachMessage(marker, path) {
         };
 
         var ib = new InfoBox(myOptions);
+        boxes.push(ib);
         google.maps.event.addListener(marker, 'click', function() {
           ib.open(marker.get('map'), marker);
         });
-       return ib;
 }
 
 function clearOverlays(markersArray) {

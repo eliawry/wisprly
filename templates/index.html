@@ -43,8 +43,7 @@
             position: position,
             map: map
           });
-          a = attachMessage(marker, data[i]['link']);
-          boxes.push(a);
+          attachMessage(marker, data[i]['link']), boxes;
           markersArray.push(marker);
         }
         addClosingOthers(markersArray, boxes);
