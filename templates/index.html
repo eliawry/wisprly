@@ -32,10 +32,11 @@
     var curPos;
     var map;
     var markersArray = [];
-
+    var boxes = [];
     function setMarkers (data) {
       clearOverlays(markersArray);
-      markersArray = []
+      clearOverlays(boxes);
+      markersArray = [];
       boxes = [];
       for (var i = 0; i < data.length; i++) {
           var position = new google.maps.LatLng(
