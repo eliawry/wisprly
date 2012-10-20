@@ -70,7 +70,9 @@ function attachMessage(marker, path, boxes) {
 
 function clearOverlays(marray) {
   for (var i = 0; i < marray.length; i++ ) {
+
     marray[i].setMap(null);
+
   }
   marray = [];
 }
