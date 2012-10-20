@@ -39,7 +39,7 @@ def test_data():
 
 @app.route('/', methods=['GET'])
 def hello():
-
+    mongo_conn().app8563631.whispers.remove()
     return render_template("index.html")
 
 @app.route('/upload_geoaudio', methods=['POST'])
@@ -61,9 +61,10 @@ def upload_geoaudio():
     conn = S3Connection('AKIAIVNDDEXUH2KCJWJA', 'KdY8E/dfj1UXPs1wHXwYxllUr+hrGGNoVvfaKuMV')
     bucket = conn.create_bucket('whisperly')
     k = Key(bucket)
+    k.key = str(uuid.uuid4())
     k.set_metadata("Content-Type", 'audio/aac')
     k.set_contents_from_string(whisper)
-    k.key = uuid.uuid4()
+
 
     # Get the geolocation data
     whisperData = {
