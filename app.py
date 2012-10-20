@@ -23,8 +23,9 @@ app = Flask(__name__)
 def mongo_conn():
     # Format: MONGOHQ_URL: mongodb://<user>:<pass>@<base_url>:<port>/<url_path>
     if os.environ.get('MONGOHQ_URL'):
-        return Connection(os.environ['MONGOLAB_URI'])
+        return Connection(os.environ['MONGOHQ_URI'])
     else:
+        #return Connection('mongodb://heroku:07d95f7ef938ef3b2fc664f8734c23c9@alex.mongohq.com:10046/app8563631')
         return Connection()
     
 
@@ -34,11 +35,12 @@ def hello():
     connection = mongo_conn()
 
     db = connection.my_database
+    db.authenticate('heroku', '07d95f7ef938ef3b2fc664f8734c23c9')
     
     if request.method == 'POST':
         whisper = request.files['whisper']
         filename = secure_filename(whisper.filename)
-        conn = S3Connection('AKIAJHIOLSDVACJCJXWQ', '2BS/TR7pCxMrR2stu2BSGVjvne0Dz8EBEfHjwEVX')
+        conn = S3Connection('AKIAIVNDDEXUH2KCJWJA', 'KdY8E/dfj1UXPs1wHXwYxllUr+hrGGNoVvfaKuMV')
         bucket = conn.create_bucket('whisperly')
         k = Key(bucket)
         k.key = whisper.filename
@@ -72,6 +74,9 @@ def hello():
     </form>
     '''
 
+@app.route('/upload_geoaudio', methods=['POST'])
+def upload_geoaudio():
+    return "" #
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
