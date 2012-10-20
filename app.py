@@ -25,8 +25,7 @@ def mongo_conn():
     if os.environ.get('MONGOHQ_URL'):
         return Connection(os.environ['MONGOHQ_URL'])
     else:
-        #return Connection('mongodb://heroku:07d95f7ef938ef3b2fc664f8734c23c9@alex.mongohq.com:10046/app8563631')
-        return Connection()
+        return Connection('mongodb://heroku:07d95f7ef938ef3b2fc664f8734c23c9@alex.mongohq.com:10046/app8563631')
     
 
 @app.route('/', methods=['GET', 'POST'])
@@ -34,8 +33,7 @@ def hello():
     # Get your DB
     connection = mongo_conn()
 
-    db = connection.my_database
-    db.authenticate('heroku', '07d95f7ef938ef3b2fc664f8734c23c9')
+    db = connection.app8563631
     
     if request.method == 'POST':
         whisper = request.files['whisper']
