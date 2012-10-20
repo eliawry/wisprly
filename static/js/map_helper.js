@@ -83,7 +83,7 @@ function addClosingOthers(markers, boxes){
     // reference clicked marker
     var curMarker =  this;
     // loop through all markers
-    $.each(boxlist, function(index, box) {
+    $.each(boxes, function(index, box) {
         // if marker is not the clicked marker, close the marker
         if(markers[index] !== curMarker) {
             box.close();
