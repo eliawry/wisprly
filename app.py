@@ -24,7 +24,8 @@ app = Flask(__name__)
 def hello():
 
     if os.environ.get('MONGOHQ_URL'):
-        connection = Connection(os.environ['MONGOHQ_URL'])
+        #connection = Connection(os.environ['MONGOHQ_URL'])
+        return os.environ['MONGOHQ_URL']
     else:
         connection = Connection()
     # Get your DB
