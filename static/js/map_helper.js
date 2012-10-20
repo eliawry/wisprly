@@ -38,8 +38,6 @@ var styles = [
         }
       ];
 
-
-
 function attachMessage(marker, path) {
        var boxText = document.createElement("div");
         boxText.style.cssText = "margin-top: 2px; background: #8FC4BC; padding: 2px; border-radius: 70px;";

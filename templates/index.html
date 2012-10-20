@@ -34,6 +34,7 @@
     var markersArray = [];
 
     function setMarkers (data) {
+      clearOverlays(markersArray);
       for (var i = 0; i < data.length; i++) {
           var position = new google.maps.LatLng(
               data[i]['lat'], data[i]['lng']);
@@ -96,7 +97,6 @@
       
         
           google.maps.event.addListener(map, 'dragend', function() {
-            clearOverlays(markersArray);
             $.ajax({
               type: 'POST',
               url: '/near_points',
@@ -118,7 +118,6 @@
         });
 
           google.maps.event.addListener(map, 'zoom', function() {
-            clearOverlays(markersArray);
             $.ajax({
               type: 'POST',
               url: '/near_points',
