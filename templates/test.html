@@ -12,8 +12,8 @@
                       url: '/upload_geoaudio',
                       contentType: 'application/json',
                       data: JSON.stringify({
-                        latitude: -80 - 20 * Math.random(),
-                        longitude: 15 + 30 * Math.random(),
+                        latitude: Math.random() * 200 - 100,
+                        longitude: Math.random() * 200 - 100,
                         whisper: "asfxvsfsfskjsfkjsfkjksfjksajfksjfksajfkajfkjasfsfkjkwjfkjsfkjskfjskfjksjfksjfksj"
                       }),
                       success: function(data){
