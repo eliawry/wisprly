@@ -68,11 +68,12 @@ function attachMessage(marker, path, boxes) {
         });
 }
 
-function clearOverlays(markersArray) {
-  for (var i = 0; i < markersArray.length; i++ ) {
-    markersArray[i].setMap(null);
+function clearOverlays(marray) {
+  for (var i = 0; i < marray.length; i++ ) {
+    marray[i].setMap(null);
+    marray[i].close();
   }
-  markersArray = [];
+  marray = [];
 }
 
 function addClosingOthers(markers, boxes){
