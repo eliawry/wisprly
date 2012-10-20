@@ -68,3 +68,10 @@ function attachMessage(marker, path) {
           ib.open(marker.get('map'), marker);
         });
 }
+
+function clearOverlays(markersArray) {
+  for (var i = 0; i < markersArray.length; i++ ) {
+    markersArray[i].setMap(null);
+  }
+  markersArray = [];
+}
