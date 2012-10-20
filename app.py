@@ -19,6 +19,7 @@ from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
 app = Flask(__name__)
+BASE_URL = "http://guarded-earth-9510.herokuapp.com/"
 
 def mongo_conn():
     # Format: MONGOHQ_URL: mongodb://<user>:<pass>@<base_url>:<port>/<url_path>
@@ -75,13 +76,14 @@ def upload_geoaudio():
 
 @app.route('/near_points', methods=['POST'])
 def near_points():
-    data = loads(request.json)
+    latitude = float(request.json['latitude'])
+    longitude = float(request.json['longitude'])
     connection = mongo_conn()
     db = connection.app8563631
     whispers = db.whispers
-    whispers.find({"loc": {"$near": [data['longitude'], data['latitude']]}}).limit(20)
-    results = [json.dumps(doc, default=json_util.default) for doc in whispers.find()]
-    return flask.jsonify(**results)
+    near = whispers.find({"loc": {"$near": [longitude, latitude]}}).limit(20)
+    results = [{'longitude': doc['loc'][0], 'latitude': doc['loc'][1], 'link': (BASE_URL + 'sounds/' + doc['s3_key'])} for doc in near]
+    return jsonify(items=results)
     
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
