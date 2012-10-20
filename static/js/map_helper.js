@@ -65,7 +65,7 @@ function attachMessage(marker, path) {
         google.maps.event.addListener(marker, 'click', function() {
           ib.open(marker.get('map'), marker);
         });
-    return ib;
+       return ib;
 }
 
 function clearOverlays(markersArray) {

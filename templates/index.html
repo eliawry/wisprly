@@ -43,11 +43,13 @@
             position: position,
             map: map
           });
-          boxes.push(attachMessage(marker, data[i]['link']));
+          a = attachMessage(marker, data[i]['link']);
+          boxes.push(a);
           markersArray.push(marker);
         }
         addClosingOthers(markersArray, boxes);
     }
+
       function initialize() {
         var examples = [{link: "player.htm", lng: -25.89438, lat: 12.12390}, 
           {link: "player.htm", lng: -25.8912880, lat: 12.8995},
