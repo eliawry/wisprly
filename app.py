@@ -34,8 +34,6 @@ def hello():
     connection = mongo_conn()
 
     db = connection.my_database
-    db.authenticate('heroku', '07d95f7ef938ef3b2fc664f8734c23c9')
-    # Create some objects
     
     if request.method == 'POST':
         whisper = request.files['whisper']
