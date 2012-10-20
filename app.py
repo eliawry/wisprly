@@ -39,7 +39,7 @@ def test_data():
 
 @app.route('/', methods=['GET'])
 def hello():
-    mongo_conn().app8563631.whispers.remove()
+    #mongo_conn().app8563631.whispers.remove()
     return render_template("index.html")
 
 @app.route('/upload_geoaudio', methods=['POST'])
