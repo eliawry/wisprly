@@ -31,8 +31,10 @@
 
     var curPos;
     var map;
+    var markersArray = [];
 
     function setMarkers (data) {
+      clearOverlays(markersArray);
       for (var i = 0; i < data.length; i++) {
           var position = new google.maps.LatLng(
               data[i]['lat'], data[i]['lng']);
@@ -41,6 +43,7 @@
             map: map
           });
           attachMessage(marker, data[i]['link']);
+          markersArray.push(marker);
         }
     }
       function initialize() {
@@ -113,6 +116,27 @@
             });
 
         });
+
+          google.maps.event.addListener(map, 'zoom', function() {
+            $.ajax({
+              type: 'POST',
+              url: '/near_points',
+              contentType: 'application/json',
+              data: JSON.stringify({
+                latitude: map.getCenter().lat(),
+                longitude: map.getCenter().lng()
+              }),
+              success: function(data){
+                alert("YES!");
+                setMarkers(data.items);
+              },
+              error: function(data){
+                alert("Something went wrong: " + data);
+              },
+              dataType: "json"
+            });
+        });
+
 
       }
 
