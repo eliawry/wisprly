@@ -76,7 +76,6 @@ function clearOverlays(markersArray) {
 }
 
 function addClosingOthers(markers, boxes){
-
    for (var i = 0; i < markers.length; i++) {
       marker = markers[i];
       google.maps.event.addListener(marker, 'click', function() {
