@@ -6,24 +6,26 @@
         $(document).ready(function(){
             $('#testlink').click(function(e){
                 e.preventDefault();
-                $.ajax({
-                  type: 'POST',
-                  url: '/upload_geoaudio',
-                  contentType: 'application/json',
-                  data: JSON.stringify({
-                    latitude: -80 - 20 * Math.random(),
-                    longitude: 20 + 20 * Math.random(),
-                    whisper: "asfxvsfsfskjsfkjsfkjksfjksajfksjfksajfkajfkjasfsfkjkwjfkjsfkjskfjskfjksjfksjfksj"
-                  }),
-                  success: function(data){
-                    alert("YES!");
-                    $("#results").text(data);
-                  },
-                  error: function(data){
-                    alert("Something went wrong: " + data);
-                  },
-                  dataType: "text"
-                });
+                for(var i = 0; i < 500; i++){
+                    $.ajax({
+                      type: 'POST',
+                      url: '/upload_geoaudio',
+                      contentType: 'application/json',
+                      data: JSON.stringify({
+                        latitude: -80 - 20 * Math.random(),
+                        longitude: 15 + 30 * Math.random(),
+                        whisper: "asfxvsfsfskjsfkjsfkjksfjksajfksjfksajfkajfkjasfsfkjkwjfkjsfkjskfjskfjksjfksjfksj"
+                      }),
+                      success: function(data){
+                        //alert("YES!");
+                        //$("#results").text(data);
+                      },
+                      error: function(data){
+                        //alert("Something went wrong: " + data);
+                      },
+                      dataType: "text"
+                    });
+                }
             });
 
             $('#testnear').click(function(e){
