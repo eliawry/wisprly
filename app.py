@@ -23,7 +23,10 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def hello():
 
-    connection = Connection()
+    if os.getenv('MONGOHQ_URL'):
+        connection = Connection(os.getenv('MONGOHQ_URL'))
+    else:
+        connection = Connection()
     # Get your DB
     
     db = connection.my_database
