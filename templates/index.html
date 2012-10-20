@@ -82,8 +82,29 @@
         }
       
         
-        
-      }                
+          google.maps.event.addListener(map, 'dragend', function() {
+            $.ajax({
+              type: 'POST',
+              url: '/near_points',
+              contentType: 'application/json',
+              data: JSON.stringify({
+                latitude: map.getCenter().lat(),
+                longitude: map.getCenter.lng()
+              }),
+              success: function(data){
+                alert("YES!");
+                setMarkers(data.items);
+              },
+              error: function(data){
+                alert("Something went wrong: " + data);
+              },
+              dataType: "json"
+            });
+
+        });
+
+      }
+
       google.maps.event.addDomListener(window, 'load', initialize);
   </script>
   </head>
