@@ -28,13 +28,16 @@ def mongo_conn():
     else:
         #return Connection('mongodb://heroku:07d95f7ef938ef3b2fc664f8734c23c9@alex.mongohq.com:10046/app8563631')
         return Connection()
-    
+
+
+@app.route('/test', methods=['GET'])
+def test_data():
+    return render_template("test.html")    
 
 @app.route('/', methods=['GET'])
 def hello():
-    if not os.environ.get('MONGOHQ_URL'):
-        mongo_conn().app8563631.whispers.create_index([("loc", GEO2D)])
-    return render_template("test.html")
+    #return render_template("test.html")
+    return render_template("index.html")
 
 @app.route('/upload_geoaudio', methods=['POST'])
 def upload_geoaudio():
@@ -81,8 +84,8 @@ def near_points():
     connection = mongo_conn()
     db = connection.app8563631
     whispers = db.whispers
-    near = whispers.find({"loc": {"$near": [longitude, latitude]}}).limit(20)
-    results = [{'longitude': doc['loc'][0], 'latitude': doc['loc'][1], 'link': (BASE_URL + 'sounds/' + doc['s3_key'])} for doc in near]
+    near = whispers.find({"loc": {"$near": [latitude, longitude]}}).limit(20)
+    results = [{'lat': doc['loc'][0], 'lng': doc['loc'][1], 'link': (BASE_URL + 'sounds/' + doc['s3_key'])} for doc in near]
     return jsonify(items=results)
     
 if __name__ == '__main__':
