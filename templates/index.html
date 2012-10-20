@@ -35,6 +35,7 @@
 
     function setMarkers (data) {
       clearOverlays(markersArray);
+      markersArray = []
       boxes = [];
       for (var i = 0; i < data.length; i++) {
           var position = new google.maps.LatLng(
