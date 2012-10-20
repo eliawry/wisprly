@@ -38,7 +38,7 @@ var styles = [
         }
       ];
 
-function attachMessage(marker, path) {
+function attachMessage(marker, path, boxes) {
        var boxText = document.createElement("div");
         boxText.style.cssText = "margin-top: 2px; background: #8FC4BC; padding: 2px; border-radius: 70px;";
 
@@ -62,6 +62,7 @@ function attachMessage(marker, path) {
         };
 
         var ib = new InfoBox(myOptions);
+        boxes.push(ib);
         google.maps.event.addListener(marker, 'click', function() {
           ib.open(marker.get('map'), marker);
         });
@@ -72,4 +73,21 @@ function clearOverlays(markersArray) {
     markersArray[i].setMap(null);
   }
   markersArray = [];
+}
+
+function addClosingOthers(markers, boxes){
+   for (var i = 0; i < markers.length; i++) {
+      marker = markers[i];
+      google.maps.event.addListener(marker, 'click', function() {
+    // reference clicked marker
+    var curMarker =  this;
+    // loop through all markers
+    $.each(boxes, function(index, box) {
+        // if marker is not the clicked marker, close the marker
+        if(markers[index] !== curMarker) {
+            box.close();
+        }
+    });
+  });
+}
 }
