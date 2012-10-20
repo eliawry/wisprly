@@ -20,17 +20,21 @@ from boto.s3.key import Key
 
 app = Flask(__name__)
 
+def mongo_conn():
+    # Format: MONGOHQ_URL: mongodb://<user>:<pass>@<base_url>:<port>/<url_path>
+    if os.environ.get('MONGOHQ_URL'):
+        return Connection(os.environ['MONGOLAB_URI'])
+    else:
+        return Connection()
+    
+
 @app.route('/', methods=['GET', 'POST'])
 def hello():
-
-    if os.environ.get('MONGOHQ_URL'):
-        #connection = Connection(os.environ['MONGOHQ_URL'])
-        return os.environ['MONGOHQ_URL']
-    else:
-        connection = Connection()
     # Get your DB
-    
+    connection = mongo_conn()
+
     db = connection.my_database
+    db.authenticate('heroku', '07d95f7ef938ef3b2fc664f8734c23c9')
     # Create some objects
     
     if request.method == 'POST':
