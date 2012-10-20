@@ -87,8 +87,12 @@ def near_points():
     db = connection.app8563631
     whispers = db.whispers
     near = whispers.find({"loc": {"$near": [latitude, longitude]}}).limit(20)
-    results = [{'lat': doc['loc'][0], 'lng': doc['loc'][1], 'link': (BASE_URL + 'sounds/' + doc['s3_key'])} for doc in near]
+    results = [{'lat': doc['loc'][0], 'lng': doc['loc'][1], 'link': ('/sounds/' + doc['s3_key'])} for doc in near]
     return jsonify(items=results)
+
+@app.route('/sounds/<filename>', methods=['GET'])
+def play_sound(filename):
+    return render_template('player.html', filename=filename)
     
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.

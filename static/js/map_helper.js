@@ -42,7 +42,7 @@ var styles = [
 
 function attachMessage(marker, path) {
        var boxText = document.createElement("div");
-        boxText.style.cssText = "margin-top: 2px; background: #8FC4BC; padding: 2px;";
+        boxText.style.cssText = "margin-top: 2px; background: #8FC4BC; padding: 2px; border-radius: 70px;";
 
        boxText.innerHTML ='<iframe width="250" height="250" src="' + path + '" frameborder="0" allowfullscreen></iframe>';
 
