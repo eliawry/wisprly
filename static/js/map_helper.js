@@ -65,6 +65,7 @@ function attachMessage(marker, path) {
         google.maps.event.addListener(marker, 'click', function() {
           ib.open(marker.get('map'), marker);
         });
+    return ib;
 }
 
 function clearOverlays(markersArray) {
@@ -72,4 +73,22 @@ function clearOverlays(markersArray) {
     markersArray[i].setMap(null);
   }
   markersArray = [];
+}
+
+function addClosingOthers(markers, boxes){
+
+   for (var i = 0; i < markers.length; i++) {
+      marker = markers[i];
+      google.maps.event.addListener(marker, 'click', function() {
+    // reference clicked marker
+    var curMarker =  this;
+    // loop through all markers
+    $.each(boxlist, function(index, box) {
+        // if marker is not the clicked marker, close the marker
+        if(markers[index] !== curMarker) {
+            box.close();
+        }
+    });
+  });
+}
 }

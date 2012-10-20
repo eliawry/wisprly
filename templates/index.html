@@ -35,6 +35,7 @@
 
     function setMarkers (data) {
       clearOverlays(markersArray);
+      boxes = [];
       for (var i = 0; i < data.length; i++) {
           var position = new google.maps.LatLng(
               data[i]['lat'], data[i]['lng']);
@@ -42,9 +43,10 @@
             position: position,
             map: map
           });
-          attachMessage(marker, data[i]['link']);
+          boxes.push(attachMessage(marker, data[i]['link']));
           markersArray.push(marker);
         }
+        addClosingOthers(markersArray, boxes);
     }
       function initialize() {
         var examples = [{link: "player.htm", lng: -25.89438, lat: 12.12390}, 
