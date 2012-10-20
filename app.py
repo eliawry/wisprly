@@ -11,7 +11,7 @@ from flask import render_template
 from flask import make_response
 from werkzeug import secure_filename
 import pymongo
-from pymongo import Connection
+from pymongo import Connection, GEO2D
 from bson import BSON
 from bson import json_util
 import boto
@@ -25,57 +25,64 @@ def mongo_conn():
     if os.environ.get('MONGOHQ_URL'):
         return Connection(os.environ['MONGOHQ_URL'])
     else:
-        return Connection('mongodb://heroku:07d95f7ef938ef3b2fc664f8734c23c9@alex.mongohq.com:10046/app8563631')
+        #return Connection('mongodb://heroku:07d95f7ef938ef3b2fc664f8734c23c9@alex.mongohq.com:10046/app8563631')
+        return Connection()
     
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def hello():
+    if not os.environ.get('MONGOHQ_URL'):
+        mongo_conn().app8563631.whispers.create_index([("loc", GEO2D)])
+    return render_template("test.html")
+
+@app.route('/upload_geoaudio', methods=['POST'])
+def upload_geoaudio():
+    # Handle bad method calls
+    if request.method != 'POST':
+        abort(404)
+
     # Get your DB
     connection = mongo_conn()
 
     db = connection.app8563631
+
+    #whisper = request.files['whisper']
+    #filename = secure_filename(whisper.filename)
+    whisper = request.json['whisper']
+
+    # Save the whisper to S3
+    conn = S3Connection('AKIAIVNDDEXUH2KCJWJA', 'KdY8E/dfj1UXPs1wHXwYxllUr+hrGGNoVvfaKuMV')
+    bucket = conn.create_bucket('whisperly')
+    k = Key(bucket)
+    k.set_metadata("Content-Type", 'audio/aac')
+    k.set_contents_from_string(whisper)
+
+    # Get the geolocation data
+    whisperData = {
+        "loc": [float(request.json['longitude']), float(request.json['latitude'])],
+        "s3_key": k.key
+    }
+
+    # Get the collection
+    whispers = db.whispers
+
+    # Insert it into the db
+    whispers.insert(whisperData)
+
+    # Return all the whispers?
+    json_docs = [json.dumps(doc, default=json_util.default) for doc in whispers.find()]
+    return '\n'.join(json_docs)
+
+@app.route('/near_points', methods=['POST'])
+def near_points():
+    data = loads(request.json)
+    connection = mongo_conn()
+    db = connection.app8563631
+    whispers = db.whispers
+    whispers.find({"loc": {"$near": [data['longitude'], data['latitude']]}}).limit(20)
+    results = [json.dumps(doc, default=json_util.default) for doc in whispers.find()]
+    return flask.jsonify(**results)
     
-    if request.method == 'POST':
-        whisper = request.files['whisper']
-        filename = secure_filename(whisper.filename)
-        conn = S3Connection('AKIAIVNDDEXUH2KCJWJA', 'KdY8E/dfj1UXPs1wHXwYxllUr+hrGGNoVvfaKuMV')
-        bucket = conn.create_bucket('whisperly')
-        k = Key(bucket)
-        k.key = whisper.filename
-        k.set_contents_from_string(whisper.read())
-
-        whisper.seek(0)
-        car = {"brand": whisper.readline().strip(),
-               "model": whisper.readline().strip(),
-               "date": datetime.datetime.utcnow()}
-
-        # Get your collection
-        cars = db.cars
-        # Insert it
-        cars.insert(car)
-        json_docs = [json.dumps(doc, default=json_util.default) for doc in cars.find()]
-
-        #json_docs = []
-        for doc in cars.find():
-            json_doc = json.dumps(doc, default=json_util.default)
-            json_docs.append(json_doc)
-        return '\n'.join(json_docs)
-
-
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type="file" name="whisper">
-         <input type="submit" value="Upload"></p>
-    </form>
-    '''
-
-@app.route('/upload_geoaudio', methods=['POST'])
-def upload_geoaudio():
-    return "" #
-
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
