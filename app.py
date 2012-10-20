@@ -23,7 +23,7 @@ app = Flask(__name__)
 def mongo_conn():
     # Format: MONGOHQ_URL: mongodb://<user>:<pass>@<base_url>:<port>/<url_path>
     if os.environ.get('MONGOHQ_URL'):
-        return Connection(os.environ['MONGOHQ_URI'])
+        return Connection(os.environ['MONGOHQ_URL'])
     else:
         #return Connection('mongodb://heroku:07d95f7ef938ef3b2fc664f8734c23c9@alex.mongohq.com:10046/app8563631')
         return Connection()
