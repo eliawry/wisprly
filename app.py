@@ -17,6 +17,7 @@ from bson import json_util
 import boto
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
+import uuid
 
 app = Flask(__name__)
 BASE_URL = "http://guarded-earth-9510.herokuapp.com/"
@@ -62,6 +63,7 @@ def upload_geoaudio():
     k = Key(bucket)
     k.set_metadata("Content-Type", 'audio/aac')
     k.set_contents_from_string(whisper)
+    k.key = uuid.uuid4()
 
     # Get the geolocation data
     whisperData = {
